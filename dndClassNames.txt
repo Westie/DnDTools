@@ -1,0 +1,26 @@
+Bard
+Cleric
+Druid
+Fighter - Eldritch Knight
+Paladin
+Ranger
+Rogue - Arcane Trickster
+Sorcerer
+Warlock
+Wizard
+
+
+
+
+<table>
+  <tr>
+    <td>Col Head 1</td>
+    <td>Col Head 2</td>
+    <td>Col Head 3</td>
+  </tr>
+  <tr>
+    <td>normal cell 1</td>
+    <td>normal cell 2</td>
+    <td>normal cell 3</td>
+  </tr>
+</table>
