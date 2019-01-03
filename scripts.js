@@ -11,9 +11,11 @@ function myFunction() {
     myTable+="<td>---------------</td>";
     myTable+="<td>---------------</td></tr>";
 
+// let obj = JSON.parse(bardJson);
+//
+// console.log("Hello");
 
 
 
-
-  document.getElementById("dataSpace").innerHTML = "You selected: " + classValue + myTable;
+  document.getElementById("dataSpace").innerHTML = "Num: " + myTable;
 }
