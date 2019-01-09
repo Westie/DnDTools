@@ -29,78 +29,19 @@ function addToPage(singleClassArray){
 function tableMaker(singleClassArray){
   let tableOuter = document.createElement("TABLE");
 
-
   for (var key in singleClassArray) {
     if (singleClassArray.hasOwnProperty(key)) {
-        let tableRow = document.createElement("TR");
-        let rowContent = document.createTextNode(key + " -> " + singleClassArray[key]);
-        console.log(singleClassArray);
-        tableRow.appendChild(rowContent);
+      let tableRow = document.createElement("TR");
+      // let rowContent = document.createTextNode(key + " -> " + singleClassArray[key]);
+      for (let k = 0; k < singleClassArray[key].length; k++){
+        let tableCell = document.createElement("TD");
+        let cellContent = document.createTextNode(key + " -> " + singleClassArray[key][k]);
+        tableCell.appendChild(cellContent);
+        tableRow.appendChild(tableCell);
+      }
         tableOuter.appendChild(tableRow);
     }
-}
-
-
-  // for (let i = 0; i < Object.keys(singleClassArray).length; i++) {
-  //   let tableRow = document.createElement("TR");
-  //   // let rowContent = document.createTextNode(singleClassArray[i]);
-  //   console.log(singleClassArray);
-  //   tableRow.appendChild(rowContent);
-  //   tableOuter.appendChild(tableRow);
-  //
-  // }
-
-
-  // let tableCell = document.createElement("TD");
-
-
-
-  // let tableCellText = document.createTextNode(JSON.stringify(singleClassArray));
-  // tableCell.appendChild(tableCellText);
-  // tableRow.appendChild(tableCell);
-
+  }
   tableOuter.setAttribute("id", "activeTable");
-
-
-
   return tableOuter;
 }
-
-
-
-
-
-
-
-// <table>
-//   <tr>
-//     <td>Col Head 1</td>
-//     <td>Col Head 2</td>
-//     <td>Col Head 3</td>
-//   </tr>
-//   <tr>
-//     <td>normal cell 1</td>
-//     <td>normal cell 2</td>
-//     <td>normal cell 3</td>
-//   </tr>
-// </table>
-
-
-
-
-
-
-
-
-// function readJSON(word){
-//   console.log(fullClassArray[0]);
-//
-//   let name = obj.classDataArrays[0].name;
-//   let cantrips = obj.classDataArrays[0].cantrips;
-//   let l1 = obj.classDataArrays[0].l1;
-//
-//   document.getElementById("dataSpace").innerHTML = "Name: " + name + "<br>"
-//   + "Cantips: " + cantrips + "<br>"
-//   + "Level 1: " + l1;
-//   // console.log(obj);
-// }
