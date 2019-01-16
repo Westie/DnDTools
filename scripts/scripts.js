@@ -26,16 +26,23 @@ function addToPage(singleClassArray){
   }
 }
 
-function tableMaker(singleClassArray){
-  let tableOuter = document.createElement("TABLE");
 
+function tableMaker(singleClassArray){
+
+  let tableOuter = document.createElement("TABLE");
   for (var key in singleClassArray) {
     if (singleClassArray.hasOwnProperty(key)) {
       let tableRow = document.createElement("TR");
-      // let rowContent = document.createTextNode(key + " -> " + singleClassArray[key]);
-      for (let k = 0; k < singleClassArray[key].length; k++){
+      for (let k = 0; k < singleClassArray.L20.length; k++){
         let tableCell = document.createElement("TD");
-        let cellContent = document.createTextNode(key + " -> " + singleClassArray[key][k]);
+        if (typeof(singleClassArray[key][k]) == "undefined") {
+          singleClassArray[key][k] = "";
+        }
+        if (key == 'name') {
+          continue;
+        }
+        // let cellContent = document.createTextNode(key + " -> " + singleClassArray[key][k]);
+        let cellContent = document.createTextNode(singleClassArray[key][k]);
         tableCell.appendChild(cellContent);
         tableRow.appendChild(tableCell);
       }
@@ -45,3 +52,22 @@ function tableMaker(singleClassArray){
   tableOuter.setAttribute("id", "activeTable");
   return tableOuter;
 }
+
+// for (var key in singleClassArray) {
+//   if (singleClassArray.hasOwnProperty(key)) {
+//       let tableRow = document.createElement("TR");
+//       let rowContent = document.createTextNode(key + " -> " + singleClassArray[key]);
+//       // console.log(singleClassArray);
+//       tableRow.appendChild(rowContent);
+//       tableOuter.appendChild(tableRow);
+//   }
+// }
+
+  // for (let i = 0; i < Object.keys(singleClassArray).length; i++) {
+  //   let tableRow = document.createElement("TR");
+  //   // let rowContent = document.createTextNode(singleClassArray[i]);
+  //   console.log(singleClassArray);
+  //   tableRow.appendChild(rowContent);
+  //   tableOuter.appendChild(tableRow);
+  //
+  // }
