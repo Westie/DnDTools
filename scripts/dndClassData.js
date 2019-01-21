@@ -1,3 +1,4 @@
+//Cantrips known, spells known, levels
 let dndClassJSON = `
 { "classDataArrays": [
   {

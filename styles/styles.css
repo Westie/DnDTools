@@ -14,19 +14,7 @@ td {
   overflow:hidden;
   word-break:normal;
   border-color:black;
-}
-
-th {
-  font-family:Arial, sans-serif;
-  font-size:14px;
-  font-weight:normal;
-  padding:2px 5px;
-  border-style:solid;
-  border-width:1px;
-  overflow:hidden;
-  word-break:normal;
-  border-color:black;
-  color: red;
+  width: 3em;
 }
 
 input {
