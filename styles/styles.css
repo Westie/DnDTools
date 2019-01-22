@@ -25,3 +25,7 @@ input {
 select {
   margin-bottom: 1em;
 }
+
+.label {
+  background-color: #bde9ba;
+}
