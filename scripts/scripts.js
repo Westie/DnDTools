@@ -15,9 +15,29 @@ let fullClassArray = obj.classDataArrays;
     document.getElementById(fullClassArray[i].name + "Option")
     .addEventListener("click", function(){addToPage(fullClassArray[i])});
   }
+
+  let levelList = document.getElementById("levelList");
+  levelList.onchange = function(){levelRowHighlighter(levelList.value)};
 }());
 
+function levelRowHighlighter(value){
+  //nested for loop too set all cells to white, like a reset
+  for (let i = 0; i < 20; i++) {
+    for (let k = 0; k < 11; k++) {
+      document.getElementsByClassName("L"+(i+1))[k].style.backgroundColor = "#ffffff";
+    }
+  }
+  //changes colour of selected level row
+  let levelRow = document.getElementsByClassName("L"+value);
+  for (let i = 0; i < levelRow.length; i++) {
+    levelRow[i].style.backgroundColor = "#bed4f7";
+  }
+}
+
 function addToPage(singleClassArray){
+  //enabled level dropdown
+  document.getElementById("levelList").disabled = false;
+
   //replaces current table on page (if it exists) with newly selected class stats
   if(document.getElementById("activeTable") != null){
     document.getElementById("dataSpace").replaceChild(tableMaker(singleClassArray), document.getElementById("activeTable"));
@@ -78,6 +98,7 @@ function tableMaker(singleClassArray){
     for (let k = 0; k < singleClassArray.L20.length; k++){
       //creates table cells for each stat + enough to make square table
       let tableCell = document.createElement("TD");
+      tableCell.setAttribute("class", Object.keys(singleClassArray)[count-1])
       if (typeof(singleClassArray[key][k]) == "undefined") {
         //if cell is going to be empty
         singleClassArray[key][k] = "";
