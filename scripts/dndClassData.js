@@ -1,4 +1,4 @@
-//Cantrips known, spells known, levels
+//Cantrips known, spells known, spell slots per level
 let dndClassJSON = `
 { "classDataArrays": [
   {
@@ -233,4 +233,4 @@ let dndClassJSON = `
   }
 ]}`;
 
-//Cantrips known, spells known, levels
+//Cantrips known, spells known, spell slots per level

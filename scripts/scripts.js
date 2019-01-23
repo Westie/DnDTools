@@ -29,26 +29,50 @@ function addToPage(singleClassArray){
   }
 }
 
+function labelCellMaker(cellText){
+  let tableCell = document.createElement("TD");
+  tableCell.setAttribute("class", "label");
+  let labelContent = document.createTextNode(cellText);
+  tableCell.appendChild(labelContent);
+  return tableCell;
+}
+
 function tableMaker(singleClassArray){
   //creates table to be added to page
   let tableOuter = document.createElement("TABLE");
-
   let keyArray = Object.keys(singleClassArray);
   let count = 1;
-  // console.log(keyArray);
 
   for (let key in singleClassArray) {
-    let tableRow = document.createElement("TR");
     //loop through keys in class data
-    if (!tableRow.innerHTML) {
-      if (key != "name") {
-        let tableCell = document.createElement("TD");
-        tableCell.setAttribute("class", "label");
-        let labelContent = document.createTextNode(keyArray[count]);
-        tableCell.appendChild(labelContent);
-        tableRow.appendChild(tableCell);
-        count++;
+    let tableRow = document.createElement("TR");
+
+    if (key == "name") {
+      //Cantrips known, spells known, spell slots per level
+      //creates label row at top of table
+      let topRow = document.createElement("TR");
+      let triEmptyCell = labelCellMaker("");
+      triEmptyCell.setAttribute("colspan", "3");
+      let theRestofTheRow = labelCellMaker("Spell Slots Per Spell Level")
+      theRestofTheRow.setAttribute("colspan", singleClassArray.L20.length - 2);
+
+      topRow.appendChild(triEmptyCell);
+      topRow.appendChild(theRestofTheRow);
+      tableOuter.appendChild(topRow);
+
+      tableRow.appendChild(labelCellMaker(""));
+      tableRow.appendChild(labelCellMaker("Cantrips"));
+      tableRow.appendChild(labelCellMaker("Spells Known"));
+      for (let i = 0; i < singleClassArray.L20.length - 2; i++) {
+        tableRow.appendChild(labelCellMaker("L" + (i+1)));
       }
+    }
+
+    if (!tableRow.innerHTML && key != "name") {
+      //if row is empty, and the key is not name
+      //adds the Level number to the first index of each row
+      tableRow.appendChild(labelCellMaker(keyArray[count]));
+      count++;
     }
 
     for (let k = 0; k < singleClassArray.L20.length; k++){
