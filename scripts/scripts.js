@@ -24,11 +24,12 @@ let tableRowSelectedColour = getComputedStyle(document.body).getPropertyValue('-
 }());
 
 function levelRowHighlighter(value){
-  //nested for loop too set all cells to white, like a reset
+  //initial loop to naivgate  columns with nested forEach to set each cell colour
   for (let i = 0; i < 20; i++) {
-    for (let k = 0; k < 11; k++) {
-      document.getElementsByClassName("L"+(i+1))[k].style.backgroundColor = tableBackgroundColour;
-    }
+    let array = document.getElementsByClassName("L"+(i+1));
+    Array.from(array).forEach(function (element) {
+      element.style.backgroundColor = tableBackgroundColour;
+    });
   }
   //changes colour of selected level row
   let levelRow = document.getElementsByClassName("L"+value);

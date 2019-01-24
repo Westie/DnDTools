@@ -1,4 +1,7 @@
 //Cantrips known, spells known, spell slots per level
+
+//All DnD classes must have all 20 levels defined
+
 let dndClassJSON = `
 { "classDataArrays": [
   {
