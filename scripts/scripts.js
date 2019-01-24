@@ -1,6 +1,9 @@
 let obj = JSON.parse(dndClassJSON);
 let fullClassArray = obj.classDataArrays;
 
+let tableBackgroundColour = getComputedStyle(document.body).getPropertyValue('--tableBackgroundColour');
+let tableRowSelectedColour = getComputedStyle(document.body).getPropertyValue('--tableRowSelectedColour');
+
 (function(){
   //takes dnd class names from JSON and populates dropdown
   //this function runs automatically at page load
@@ -24,13 +27,13 @@ function levelRowHighlighter(value){
   //nested for loop too set all cells to white, like a reset
   for (let i = 0; i < 20; i++) {
     for (let k = 0; k < 11; k++) {
-      document.getElementsByClassName("L"+(i+1))[k].style.backgroundColor = "#ffffff";
+      document.getElementsByClassName("L"+(i+1))[k].style.backgroundColor = tableBackgroundColour;
     }
   }
   //changes colour of selected level row
   let levelRow = document.getElementsByClassName("L"+value);
   for (let i = 0; i < levelRow.length; i++) {
-    levelRow[i].style.backgroundColor = "#bed4f7";
+    levelRow[i].style.backgroundColor = tableRowSelectedColour;
   }
 }
 
