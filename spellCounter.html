@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DnD Tools</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <header>
+    <h1>DnD Spell Counter</h1>
+  </header>
+  <main>
+    <section>
+      <select id="classList">
+        <option value="" selected disabled hidden>Choose class</option>
+        <!-- options populate from js -->
+      </select>
+      <select id="levelList" disabled>
+        <option value="" selected disabled hidden>Player Level</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option>16</option>
+        <option>17</option>
+        <option>18</option>
+        <option>19</option>
+        <option>20</option>
+      </select>
+    </section>
+    <h2 id="classNameHeader"></h2>
+    <section id="dataSpace">
+    </section>
+</main>
+<script src="scripts/dndClassData.js"></script>
+<script src="scripts/spellScript.js"></script>
+</body>
+</html>
