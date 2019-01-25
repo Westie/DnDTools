@@ -1,29 +1,26 @@
-let obj = JSON.parse(dndClassJSON);
-let fullClassArray = obj.classDataArrays;
-
-let tableBackgroundColour = getComputedStyle(document.body).getPropertyValue('--tableBackgroundColour');
-let tableRowSelectedColour = getComputedStyle(document.body).getPropertyValue('--tableRowSelectedColour');
-
 (function(){
+  let obj = JSON.parse(dndClassJSON);
+  let fullClassArray = obj.classDataArrays;
   //takes dnd class names from JSON and populates dropdown
   //this function runs automatically at page load
+  let selectSpace = document.getElementById("classList");
   for (let i = 0; i < fullClassArray.length; i++) {
-    let selectSpace = document.getElementById("classList");
     let option = document.createElement("OPTION");
     let optionText = document.createTextNode(fullClassArray[i].name);
     option.appendChild(optionText);
     option.setAttribute("value", fullClassArray[i].name);
     option.setAttribute("id", fullClassArray[i].name + "Option");
     selectSpace.appendChild(option);
-    document.getElementById(fullClassArray[i].name + "Option")
-    .addEventListener("click", function(){addToPage(fullClassArray[i])});
   }
-
+  selectSpace.onchange = function(){addToPage(fullClassArray[this.selectedIndex-1])};
   let levelList = document.getElementById("levelList");
   levelList.onchange = function(){levelRowHighlighter(levelList.value)};
 }());
 
 function levelRowHighlighter(value){
+  let tableBackgroundColour = getComputedStyle(document.body).getPropertyValue('--tableBackgroundColour');
+  let tableRowSelectedColour = getComputedStyle(document.body).getPropertyValue('--tableRowSelectedColour');
+
   //initial loop to naivgate  columns with nested forEach to set each cell colour
   for (let i = 0; i < 20; i++) {
     let array = document.getElementsByClassName("L"+(i+1));
