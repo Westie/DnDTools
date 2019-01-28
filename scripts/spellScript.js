@@ -4,14 +4,14 @@
   //takes dnd class names from JSON and populates dropdown
   //this function runs automatically at page load
   let selectSpace = document.getElementById("classList");
-  for (let i = 0; i < fullClassArray.length; i++) {
+  Array.from(fullClassArray).forEach(function(element){
     let option = document.createElement("OPTION");
-    let optionText = document.createTextNode(fullClassArray[i].name);
+    let optionText = document.createTextNode(element.name);
     option.appendChild(optionText);
-    option.setAttribute("value", fullClassArray[i].name);
-    option.setAttribute("id", fullClassArray[i].name + "Option");
+    option.setAttribute("value", element.name);
+    option.setAttribute("id", element.name + "Option");
     selectSpace.appendChild(option);
-  }
+  })
   selectSpace.onchange = function(){addToPage(fullClassArray[this.selectedIndex-1])};
   let levelList = document.getElementById("levelList");
   levelList.onchange = function(){levelRowHighlighter(levelList.value)};
@@ -21,18 +21,17 @@ function levelRowHighlighter(value){
   let tableBackgroundColour = getComputedStyle(document.body).getPropertyValue('--tableBackgroundColour');
   let tableRowSelectedColour = getComputedStyle(document.body).getPropertyValue('--tableRowSelectedColour');
 
-  //initial loop to naivgate  columns with nested forEach to set each cell colour
-  for (let i = 0; i < 20; i++) {
-    let array = document.getElementsByClassName("L"+(i+1));
-    Array.from(array).forEach(function (element) {
-      element.style.backgroundColor = tableBackgroundColour;
-    });
-  }
+  //sets background colour of all cells background colour
+  let array = document.getElementsByClassName("nonLabel");
+  Array.from(array).forEach(function (element) {
+    element.style.backgroundColor = tableBackgroundColour;
+  });
+
   //changes colour of selected level row
   let levelRow = document.getElementsByClassName("L"+value);
-  for (let i = 0; i < levelRow.length; i++) {
-    levelRow[i].style.backgroundColor = tableRowSelectedColour;
-  }
+  Array.from(levelRow).forEach(function(element){
+    element.style.backgroundColor = tableRowSelectedColour;
+  })
 }
 
 function addToPage(singleClassArray){
@@ -99,7 +98,8 @@ function tableMaker(singleClassArray){
     for (let k = 0; k < singleClassArray.L20.length; k++){
       //creates table cells for each stat + enough to make square table
       let tableCell = document.createElement("TD");
-      tableCell.setAttribute("class", Object.keys(singleClassArray)[count-1])
+      // tableCell.setAttribute("class", Object.keys(singleClassArray)[count-1])
+      tableCell.setAttribute("class", "nonLabel " + Object.keys(singleClassArray)[count-1])
       if (typeof(singleClassArray[key][k]) == "undefined") {
         //if cell is going to be empty
         singleClassArray[key][k] = "";
