@@ -1,7 +1,7 @@
 let obj = JSON.parse(monstersJSON);
 let fullMonsterArray = obj.monsterDataArrays;
-(function(){
 
+(function(){
   let dropDown = document.getElementById("dropDownForMonsters");
   Array.from(fullMonsterArray).forEach(function(element){
     let option = document.createElement("OPTION");
@@ -10,28 +10,41 @@ let fullMonsterArray = obj.monsterDataArrays;
     dropDown.appendChild(option);
   })
 
-  let fightButton = document.getElementById("addToFightButton");
-  fightButton.onclick = function(){fightButtonListener();};
+  let addMonsterButton = document.getElementById("addMonsterButton");
+  addMonsterButton.onclick = function(){monsterButtonEvent();};
 
+  let addPlayerButton = document.getElementById("addPlayerButton");
+  addPlayerButton.onclick = function(){playerButtonEvent();};
+
+  //disables add player button and re-enables with completed input fields
+  let inputs = document.querySelectorAll('[class="playerFormInput"]');
+  addPlayerButton.disabled = true;
+  for (i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input',() => {
+      let values = []
+      inputs.forEach(v => values.push(v.value))
+      addPlayerButton.disabled = values.includes('')
+    })
+  }
 }());
 
-function fightButtonListener(){
+function playerButtonEvent(){
+  let playerName = document.getElementById("playerName").value;
+  let dexMod = document.getElementById("dexMod").value;
+  let initiativeRoll = document.getElementById("initiativeRoll").value;
+  console.log(playerName + " -> " + dexMod + " -> " + initiativeRoll);
+}
+
+function monsterButtonEvent(){
   let fightBox = document.getElementById("fightBox");
   let dropDown = document.getElementById("dropDownForMonsters");
   let selectedMonsterIndex = dropDown.options[dropDown.selectedIndex].index - 1;
   let selectedMonster = fullMonsterArray[selectedMonsterIndex];
-  // fightBox.appendChild(document.createTextNode(selectedMonster.name));
+  fightBox.appendChild(document.createTextNode(selectedMonster.name));
 
-  // let strJson = syntaxHighlight(selectedMonster);
-  // fightBox.appendChild(document.createTextNode(strJson));
-
-  var str = JSON.stringify(selectedMonster, undefined, 4);
-
-  // output(str);
+  let str = JSON.stringify(selectedMonster, undefined, 4);
   document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
-
 }
-
 
 function syntaxHighlight(json) {
     if (typeof json != 'string') {

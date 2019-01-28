@@ -16,15 +16,39 @@
         <option value="" selected disabled hidden>Choose monster</option>
         <!-- options populate from js -->
       </select>
-      <button type="button" id="addToFightButton">Add to Fight!</button>
+      <button type="button" id="addMonsterButton">Add Monster</button>
+    </section>
+    <section class="playerPanel">
+      Player Name:
+      <input type="text" class="playerFormInput" id="playerName">
+      <br>
+      Dexterity Modifier:
+      <input type="number" class="playerFormInput" id="dexMod">
+      <br>
+      Initiative Roll
+      <input type="number" class="playerFormInput" id="initiativeRoll">
+      <br>
+      <button type="button" id="addPlayerButton" >Add Player</button>
+      <!-- <form>
+  <input class="playerFormInput"id=fornamn type=text><br>
+  <input class="playerFormInput"id=efternamn type=text><br>
+  <input class="playerFormInput"id=passnr type=text><br>
+  <input class="playerFormInput"id=nat type=text><br>
+  <input type=button id=skicka value=Complete>
+</form> -->
     </section>
     <section id="fightBox">
-    </section
+    </section>
   </main>
-  <script src="scripts/monsters.js"></script>
-  <script src="scripts/encounterScript.js"></script>
 
-  <!-- <script type="module" src="scripts/monsters.json"></script> -->
-  <!-- Monster JSON obtained from https://github.com/adrpadua/5e-database -->
+  <!-- <section class="navbar">
+  <a>Home</a>
+  <a>News</a>
+  <a>Contact</a>
+</section> -->
+
+<!-- Monster JSON obtained from https://api-beta.open5e.com/monsters/ -->
+<script src="scripts/monsters.js"></script>
+<script src="scripts/encounterScript.js"></script>
 </body>
 </html>
