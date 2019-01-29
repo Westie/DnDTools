@@ -41,6 +41,44 @@ select {
   padding: 5px;
 }
 
+#fightBox {
+  border-style:solid;
+  border-width:1px;
+  border-color: blue;
+  padding: 5px;
+}
+
+.participant{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-between;
+}
+
+.conditionText{
+  color: red;
+}
+
+abbr {
+  text-decoration: none;
+}
+
+.fas:hover{
+  cursor: pointer;
+}
+
+.fas{
+  color: grey;
+}
+
+.activeColour{
+    color: red;
+ }
+
+p{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 
 /* .navbar {
   background-color: #333;

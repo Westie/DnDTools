@@ -2,22 +2,19 @@ let obj = JSON.parse(monstersJSON);
 let fullMonsterArray = obj.monsterDataArrays;
 
 (function(){
+  //populating monster drop down menu
   let dropDown = document.getElementById("dropDownForMonsters");
   Array.from(fullMonsterArray).forEach(function(element){
     let option = document.createElement("OPTION");
     let optionText = document.createTextNode("CR: " + element.challenge_rating + " -> " + element.name);
     option.appendChild(optionText);
     dropDown.appendChild(option);
-  })
+  });
 
-  let addMonsterButton = document.getElementById("addMonsterButton");
-  addMonsterButton.onclick = function(){monsterButtonEvent();};
-
-  let addPlayerButton = document.getElementById("addPlayerButton");
-  addPlayerButton.onclick = function(){playerButtonEvent();};
+  applyEvents();
 
   //disables add player button and re-enables with completed input fields
-  let inputs = document.querySelectorAll('[class="playerFormInput"]');
+  let inputs = document.querySelectorAll(".playerFormInput");
   addPlayerButton.disabled = true;
   for (i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('input',() => {
@@ -27,6 +24,45 @@ let fullMonsterArray = obj.monsterDataArrays;
     })
   }
 }());
+
+function applyEvents(){
+  let addMonsterButton = document.getElementById("addMonsterButton");
+  addMonsterButton.onclick = function(){monsterButtonEvent();};
+
+  let addPlayerButton = document.getElementById("addPlayerButton");
+  addPlayerButton.onclick = function(){playerButtonEvent();};
+
+  dropDownForMonsters.onchange = function(){addMonsterButton.disabled = false;};
+
+  //SYMBOL COLOUR CHANGE
+  let conditionArray = document.querySelectorAll(".fas");
+  conditionArray.forEach(function(element){
+    element.onclick = function(){
+      element.classList.toggle("activeColour");
+    };
+  });
+
+  // let exhaustIcon = document.getElementsByClassName("exhaustIcon");
+  // let exhaustSuper = document.getElementsByClassName("exhaustSuper");
+  // let cc = 0;
+  // exhaustIcon.onclick = function(){
+  //   cc = cc + 1;
+  //   exhaustSuper.innerHTML = cc;
+  //   if (cc >= 5) {
+  //     cc = -1;
+  //   }
+  //   if (cc > 0) {
+  //     exhaustIcon.classList.add("activeColour");
+  //   }
+  //   if (cc == 0) {
+  //     exhaustIcon.classList.remove("activeColour");
+  //   }
+  // };
+
+
+}
+
+
 
 function playerButtonEvent(){
   let playerName = document.getElementById("playerName").value;
@@ -45,6 +81,16 @@ function monsterButtonEvent(){
   let str = JSON.stringify(selectedMonster, undefined, 4);
   document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
 }
+
+
+
+
+
+
+
+
+
+
 
 function syntaxHighlight(json) {
     if (typeof json != 'string') {

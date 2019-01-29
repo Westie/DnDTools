@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DnD Tools</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Monster Reference</h1>
+  </header>
+  <main>
+    <section id="space">
+      <select id="dropDownForMonsters">
+        <option value="" selected disabled hidden>Choose monster</option>
+        <!-- options populate from js -->
+      </select>
+      <button type="button" id="addMonsterButton" disabled="true">Add Monster</button>
+    </section>
+    <pre id="monsterDataSpace">
+    </pre>
+  </main>
+
+  <!-- Monster JSON obtained from https://api-beta.open5e.com/monsters/ -->
+  <script src="scripts/monsters.js"></script>
+  <script src="scripts/monsterRef.js"></script>
+</body>
+</html>
