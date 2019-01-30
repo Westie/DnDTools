@@ -34,13 +34,8 @@ function applyEvents(){
 
   dropDownForMonsters.onchange = function(){addMonsterButton.disabled = false;};
 
-  //SYMBOL COLOUR CHANGE
-  let conditionArray = document.querySelectorAll(".fas");
-  conditionArray.forEach(function(element){
-    element.onclick = function(){
-      element.classList.toggle("activeColour");
-    };
-  });
+
+
 
   // let exhaustIcon = document.getElementsByClassName("exhaustIcon");
   // let exhaustSuper = document.getElementsByClassName("exhaustSuper");
@@ -66,9 +61,127 @@ function applyEvents(){
 
 function playerButtonEvent(){
   let playerName = document.getElementById("playerName").value;
+  let playerHP = document.getElementById("playerHP").value;
   let dexMod = document.getElementById("dexMod").value;
   let initiativeRoll = document.getElementById("initiativeRoll").value;
-  console.log(playerName + " -> " + dexMod + " -> " + initiativeRoll);
+  console.log(playerName + " -> " + playerHP + " -> " + dexMod + " -> " + initiativeRoll);
+
+  let fightBox = document.getElementById("fightBox");
+  let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
+
+  //create playerDetails div
+  let pDeets = createElementWithSingleAttribute("DIV", "class", "playerDetails");
+  let namePara = document.createElement("P");
+  nameParaContent = document.createTextNode(playerName);
+  namePara.appendChild(nameParaContent);
+  pDeets.appendChild(namePara);
+
+  let hpPara = document.createElement("P");
+  let hpParaText = document.createTextNode("HP:");
+  hpPara.appendChild(hpParaText);
+  let hpNumBox = createElementWithSingleAttribute("input", "type", "number");
+  hpNumBox.setAttribute("value", playerHP);
+  hpPara.appendChild(hpNumBox);
+  pDeets.appendChild(hpPara);
+
+  let aggrIni = document.createElement("P");
+  let aggrIniText = document.createTextNode("Aggr. Initiative: " + (Number(initiativeRoll) + Number(dexMod)));
+  aggrIni.appendChild(aggrIniText);
+  pDeets.appendChild(aggrIni);
+
+  participantBox.appendChild(pDeets);
+
+  //create conditionSymbols div
+  let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
+
+  conSym.appendChild(createABBRandI("Blinded", "fas fa-eye-slash"));
+  conSym.appendChild(createABBRandI("Deafened", "fas fa-deaf"));
+  conSym.appendChild(createABBRandI("Prone", "fas fa-arrow-down"));
+  conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
+
+  let exhaustCount = document.getElementsByClassName("fa-bed").length;
+  // let exhaustSpecial = createABBRandI("Exhausted", "fas fa-bed");
+
+  let exhAbbr = document.createElement("ABBR");
+  exhAbbr.setAttribute("title", "Exhausted");
+  let exhElement = document.createElement("I");
+  exhElement.setAttribute("class", "fas fa-bed");
+  exhAbbr.appendChild(exhElement);
+
+
+
+  // exhaustSpecial.classList.add("spec"+exhaustCount);
+  conSym.appendChild(exhAbbr);
+
+  let exhaustSuper = createElementWithSingleAttribute("SUP", "class", "spec"+exhaustCount);
+  let exSupText = document.createTextNode("0");
+  exhaustSuper.appendChild(exSupText);
+  conSym.appendChild(exhaustSuper);
+
+
+  let deathSavingDiv = createElementWithSingleAttribute("DIV", "class", "deathSaving");
+  let heartBeat = createElementWithSingleAttribute("I", "class", "fas fa-heartbeat");
+  let skullBones = createElementWithSingleAttribute("I", "class", "fas fa-skull-crossbones");
+
+  deathSavingDiv.appendChild(heartBeat);
+  deathSavingDiv.appendChild(heartBeat.cloneNode(true));
+  deathSavingDiv.appendChild(heartBeat.cloneNode(true));
+  deathSavingDiv.appendChild(skullBones);
+  deathSavingDiv.appendChild(skullBones.cloneNode(true));
+  deathSavingDiv.appendChild(skullBones.cloneNode(true));
+
+  conSym.appendChild(deathSavingDiv);
+  participantBox.appendChild(conSym);
+  fightBox.appendChild(participantBox);
+
+  //SYMBOL COLOUR CHANGE
+  let conditionArray = document.querySelectorAll("i.fas:not(.fa-bed)");
+  conditionArray.forEach(function(element){
+    element.onclick = function(){
+      element.classList.toggle("activeColour");
+    };
+  });
+
+  exhElement.onclick = function(){
+    let exCount = Number(exhaustSuper.innerHTML);
+    if (exCount >= 5) {
+      exCount = 0;
+      exhaustSuper.innerHTML = exCount;
+    }
+    else{
+      exCount = exCount + 1;
+      exhaustSuper.innerHTML = exCount;
+    }
+
+    if (exCount == 1 || exCount == 2 || exCount == 3 || exCount == 4 || exCount == 5) {
+      exhElement.classList.add("activeColour");
+    }
+    else {
+      exhElement.classList.remove("activeColour");
+    }
+  };
+
+
+
+
+
+
+
+}
+
+function createABBRandI(conditionTitle, iClass){
+  let abbr = document.createElement("ABBR");
+  abbr.setAttribute("title", conditionTitle);
+  let iElement = document.createElement("I");
+  iElement.setAttribute("class", iClass);
+  abbr.appendChild(iElement);
+  return abbr;
+}
+
+function createElementWithSingleAttribute(element, attributeType, attributeValue){
+  let htmlElement = document.createElement(element);
+  htmlElement.setAttribute(attributeType, attributeValue);
+  return htmlElement;
 }
 
 function monsterButtonEvent(){

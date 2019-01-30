@@ -17,17 +17,20 @@
         <option value="" selected disabled hidden>Choose monster</option>
         <!-- options populate from js -->
       </select>
-      <button type="button" id="addMonsterButton" disabled="true">Add Monster</button>
+      <button type="button" id="addMonsterButton" disabled>Add Monster</button>
     </section>
     <section class="playerPanel">
       Player Name:
-      <input type="text" class="playerFormInput" id="playerName">
+      <input type="text" class="playerFormInput" id="playerName" value="John">
+      <br>
+      Player HP:
+      <input type="number" class="playerFormInput" id="playerHP" value="32">
       <br>
       Dexterity Modifier:
-      <input type="number" class="playerFormInput" id="dexMod">
+      <input type="number" class="playerFormInput" id="dexMod" value="4">
       <br>
       Initiative Roll
-      <input type="number" class="playerFormInput" id="initiativeRoll">
+      <input type="number" class="playerFormInput" id="initiativeRoll" value="13">
       <br>
       <button type="button" id="addPlayerButton">Add Player</button>
 
@@ -36,13 +39,11 @@
 
 
 
-      <div class="participant">
+      <!-- <div class="participant">
         <div class = "playerDetails">
           <p>PLAYER NAME</p>
-          <p>HP: <input type="number" id="damage"></p>
-          <p>Initiative: 10</p>
-        </div>
-        <div id="activeConditionSpace">
+          <p>HP: <input type="number"></p>
+          <p>Aggr. Initiative: 10</p>
         </div>
         <div class="conditionSymbols">
           <abbr title="Blinded">
@@ -55,13 +56,8 @@
             <i class="fas fa-arrow-down"></i>
           </abbr>
           <abbr title="Charmed">
-            <i class="fas fa-heart redColor"></i>
+            <i class="fas fa-heart"></i>
           </abbr>
-          <!-- <abbr title="Exhausted">
-            <i id="exhaustIcon" class="fas fa-bed"></i>
-          </abbr>
-          <sup id="exhaustSuper">0</sup> -->
-
           <div class = "deathSaving">
             <i class="fas fa-heartbeat"></i>
             <i class="fas fa-heartbeat"></i>
@@ -71,7 +67,9 @@
             <i class="fas fa-skull-crossbones"></i>
           </div>
         </div>
-      </div>
+      </div> -->
+
+
 
     </section>
   </main>
