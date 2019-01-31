@@ -18,9 +18,9 @@ let fullMonsterArray = obj.monsterDataArrays;
   addPlayerButton.disabled = true;
   for (i = 0; i < inputs.length; i++) {
     inputs[i].addEventListener('input',() => {
-      let values = []
-      inputs.forEach(v => values.push(v.value))
-      addPlayerButton.disabled = values.includes('')
+      let values = [];
+      inputs.forEach(v => values.push(v.value));
+      addPlayerButton.disabled = values.includes('');
     })
   }
 }());
@@ -33,31 +33,7 @@ function applyEvents(){
   addPlayerButton.onclick = function(){playerButtonEvent();};
 
   dropDownForMonsters.onchange = function(){addMonsterButton.disabled = false;};
-
-
-
-
-  // let exhaustIcon = document.getElementsByClassName("exhaustIcon");
-  // let exhaustSuper = document.getElementsByClassName("exhaustSuper");
-  // let cc = 0;
-  // exhaustIcon.onclick = function(){
-  //   cc = cc + 1;
-  //   exhaustSuper.innerHTML = cc;
-  //   if (cc >= 5) {
-  //     cc = -1;
-  //   }
-  //   if (cc > 0) {
-  //     exhaustIcon.classList.add("activeColour");
-  //   }
-  //   if (cc == 0) {
-  //     exhaustIcon.classList.remove("activeColour");
-  //   }
-  // };
-
-
 }
-
-
 
 function playerButtonEvent(){
   let playerName = document.getElementById("playerName").value;
@@ -70,11 +46,11 @@ function playerButtonEvent(){
   let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
 
   //create playerDetails div
-  let pDeets = createElementWithSingleAttribute("DIV", "class", "playerDetails");
+  let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
   let namePara = document.createElement("P");
   nameParaContent = document.createTextNode(playerName);
   namePara.appendChild(nameParaContent);
-  pDeets.appendChild(namePara);
+  participantTopBox.appendChild(namePara);
 
   let hpPara = document.createElement("P");
   let hpParaText = document.createTextNode("HP:");
@@ -82,14 +58,14 @@ function playerButtonEvent(){
   let hpNumBox = createElementWithSingleAttribute("input", "type", "number");
   hpNumBox.setAttribute("value", playerHP);
   hpPara.appendChild(hpNumBox);
-  pDeets.appendChild(hpPara);
+  participantTopBox.appendChild(hpPara);
 
   let aggrIni = document.createElement("P");
   let aggrIniText = document.createTextNode("Aggr. Initiative: " + (Number(initiativeRoll) + Number(dexMod)));
   aggrIni.appendChild(aggrIniText);
-  pDeets.appendChild(aggrIni);
+  participantTopBox.appendChild(aggrIni);
 
-  participantBox.appendChild(pDeets);
+  participantBox.appendChild(participantTopBox);
 
   //create conditionSymbols div
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
@@ -99,25 +75,18 @@ function playerButtonEvent(){
   conSym.appendChild(createABBRandI("Prone", "fas fa-arrow-down"));
   conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
 
+  //Special case for exhausted condition
   let exhaustCount = document.getElementsByClassName("fa-bed").length;
-  // let exhaustSpecial = createABBRandI("Exhausted", "fas fa-bed");
-
   let exhAbbr = document.createElement("ABBR");
   exhAbbr.setAttribute("title", "Exhausted");
   let exhElement = document.createElement("I");
   exhElement.setAttribute("class", "fas fa-bed");
   exhAbbr.appendChild(exhElement);
-
-
-
-  // exhaustSpecial.classList.add("spec"+exhaustCount);
   conSym.appendChild(exhAbbr);
-
   let exhaustSuper = createElementWithSingleAttribute("SUP", "class", "spec"+exhaustCount);
   let exSupText = document.createTextNode("0");
   exhaustSuper.appendChild(exSupText);
   conSym.appendChild(exhaustSuper);
-
 
   let deathSavingDiv = createElementWithSingleAttribute("DIV", "class", "deathSaving");
   let heartBeat = createElementWithSingleAttribute("I", "class", "fas fa-heartbeat");
@@ -131,7 +100,7 @@ function playerButtonEvent(){
   deathSavingDiv.appendChild(skullBones.cloneNode(true));
 
   conSym.appendChild(deathSavingDiv);
-  participantBox.appendChild(conSym);
+  participantTopBox.appendChild(conSym);
   fightBox.appendChild(participantBox);
 
   //SYMBOL COLOUR CHANGE
@@ -160,13 +129,6 @@ function playerButtonEvent(){
       exhElement.classList.remove("activeColour");
     }
   };
-
-
-
-
-
-
-
 }
 
 function createABBRandI(conditionTitle, iClass){
@@ -189,10 +151,124 @@ function monsterButtonEvent(){
   let dropDown = document.getElementById("dropDownForMonsters");
   let selectedMonsterIndex = dropDown.options[dropDown.selectedIndex].index - 1;
   let selectedMonster = fullMonsterArray[selectedMonsterIndex];
-  fightBox.appendChild(document.createTextNode(selectedMonster.name));
 
-  let str = JSON.stringify(selectedMonster, undefined, 4);
-  document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
+  let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
+  let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
+  let participantTopBoxLeft = createElementWithSingleAttribute("DIV", "class", "participantTopBoxLeft");
+  let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
+  let monsterDetailsBox = createElementWithSingleAttribute("DIV", "class", "monsterDetails");
+  let monsterAttacksBox = createElementWithSingleAttribute("DIV", "class", "monsterAttacks");
+
+  let monsterNamePara = document.createElement("P");
+  let monsterName = document.createTextNode(selectedMonster.name);
+  monsterNamePara.appendChild(monsterName);
+  participantTopBoxLeft.appendChild(monsterNamePara);
+  participantBox.appendChild(monsterDetailsBox);
+
+  let monsterHPPara = document.createElement("P");
+  let monsterHPlabel = document.createTextNode("HP: ");
+  monsterHPPara.appendChild(monsterHPlabel);
+  let monsterHPiElement = createElementWithSingleAttribute("INPUT", "type", "number");
+  monsterHPiElement.setAttribute("value", selectedMonster.hit_points);
+  monsterHPPara.appendChild(monsterHPiElement);
+  participantTopBoxLeft.appendChild(monsterHPPara);
+
+  let monsterACPara = document.createElement("P");
+  let monsterAC = document.createTextNode("AC: " + selectedMonster.armor_class);
+  monsterACPara.appendChild(monsterAC);
+  participantTopBoxLeft.appendChild(monsterACPara);
+
+  let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
+  conSym.appendChild(createABBRandI("Blinded", "fas fa-eye-slash"));
+  conSym.appendChild(createABBRandI("Deafened", "fas fa-deaf"));
+  conSym.appendChild(createABBRandI("Prone", "fas fa-arrow-down"));
+  conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
+  participantTopBoxRight.appendChild(conSym);
+
+  if (selectedMonster.actions.length > 0) {
+    let actionsBox = createElementWithSingleAttribute("DIV", "class", "monsterActions");
+    selectedMonster.actions.forEach(function(element){
+      let singleAttack = createElementWithSingleAttribute("DIV", "class", "singleAttack");
+        for (key in element){
+          if (key == "desc" || key == "attack_bonus" || key == "damage_bonus") {
+              continue;
+          }
+          if (key == "name") {
+            let singleAttackTitle = createElementWithSingleAttribute("DIV", "class", "singleAttackTitle");
+            singleAttackTitle.appendChild(document.createTextNode(element[key] + " "));
+            singleAttackTitle.appendChild(document.createElement("BR"));
+            singleAttack.appendChild(singleAttackTitle);
+          }
+          else {
+            singleAttack.appendChild(document.createTextNode(key + " -> "+ element[key]));
+            singleAttack.appendChild(document.createElement("BR"));
+          }
+        }
+      actionsBox.appendChild(singleAttack);
+    });
+    monsterAttacksBox.appendChild(actionsBox);
+  };
+
+  if (selectedMonster.reactions.length > 0) {
+    let reactionsBox = createElementWithSingleAttribute("DIV", "class", "monsterReactions");
+    selectedMonster.reactions.forEach(function(element){
+      let singleReaction = createElementWithSingleAttribute("DIV", "class", "singleReaction");
+        for (key in element){
+          if (key == "name") {
+            singleReaction.appendChild(document.createTextNode(element[key] + " "));
+            singleReaction.appendChild(document.createElement("BR"));
+          }
+          else {
+            continue;
+          }
+        }
+      reactionsBox.appendChild(singleReaction);
+    });
+    monsterAttacksBox.appendChild(reactionsBox);
+  };
+
+  if (selectedMonster.legendary_actions.length > 0) {
+    let legendaryActionsBox = createElementWithSingleAttribute("DIV", "class", "monsterLegendaryActions");
+    selectedMonster.legendary_actions.forEach(function(element){
+      let singleLegAc = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
+        for (key in element){
+          if (key == "name") {
+            singleLegAc.appendChild(document.createTextNode(element[key] + " "));
+            singleLegAc.appendChild(document.createElement("BR"));
+          }
+        }
+      legendaryActionsBox.appendChild(singleLegAc);
+    });
+    monsterAttacksBox.appendChild(legendaryActionsBox);
+  };
+
+  if (selectedMonster.special_abilities.length > 0) {
+    let specAbBox = createElementWithSingleAttribute("DIV", "class", "monsterSpecialAbilities");
+    selectedMonster.special_abilities.forEach(function(element){
+      let singleSpecAb = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
+        for (key in element){
+          if (key == "name") {
+            singleSpecAb.appendChild(document.createTextNode(element[key] + " "));
+            singleSpecAb.appendChild(document.createElement("BR"));
+          }
+          else {
+            continue;
+          }
+        }
+      specAbBox.appendChild(singleSpecAb);
+    });
+    participantTopBoxRight.appendChild(specAbBox);
+  };
+
+  participantTopBox.appendChild(participantTopBoxLeft);
+  participantTopBox.appendChild(participantTopBoxRight);
+  monsterDetailsBox.appendChild(participantTopBox);
+  participantBox.appendChild(monsterAttacksBox);
+  fightBox.appendChild(participantBox);
+
+
+  // let str = JSON.stringify(selectedMonster, undefined, 4);
+  // document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
 }
 
 

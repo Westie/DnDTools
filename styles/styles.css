@@ -49,17 +49,64 @@ select {
 }
 
 .participant{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:space-between;
   border-style:solid;
   border-width:1px;
   border-color: red;
   padding: 5px;
 }
 
-.conditionText{
-  color: red;
+.participantTopBox{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-between;
+  border-style:solid;
+  border-width:1px;
+  border-color: orange;
+  padding: 5px;
+}
+
+.monsterAttacks{
+  display: flex;
+  flex-wrap: wrap;
+
+  border-style:solid;
+  border-width:1px;
+  border-color:pink;
+  padding: 5px;
+}
+
+.playerDetails{
+  border-style:solid;
+  border-width:1px;
+  border-color: green;
+  padding: 5px;
+}
+
+.monsterActions, .monsterReactions{
+  border-style:solid;
+  border-width:1px;
+  border-color: purple;
+  padding: 5px;
+}
+
+
+.singleAttackTitle, .monsterReactions, .monsterLegendaryActions, .monsterSpecialAbilities{
+  font-weight: bold;
+}
+
+.monsterSpecialAbilities{
+  border-style:solid;
+  border-width:1px;
+  border-color: yellow;
+  padding: 5px;
+}
+
+
+.monsterLegendaryActions{
+  border-style:solid;
+  border-width:1px;
+  border-color: green;
+  padding: 5px;
 }
 
 abbr {
@@ -72,6 +119,10 @@ abbr {
 
 .fas{
   color: grey;
+}
+
+.conditionSymbols{
+  float: right;
 }
 
 .activeColour{
