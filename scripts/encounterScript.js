@@ -178,6 +178,17 @@ function monsterButtonEvent(){
   monsterACPara.appendChild(monsterAC);
   participantTopBoxLeft.appendChild(monsterACPara);
 
+  let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
+  let monAggrIni = (modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
+  let monAggrIniPara = document.createElement("P");
+  let monAggrIniText = document.createTextNode("Aggr. Initiative = " + monAggrIni);
+  monAggrIniPara.appendChild(monAggrIniText);
+  participantTopBoxLeft.appendChild(monAggrIniPara);
+
+  for (var i = 0; i < 100; i++) {
+    console.log((modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1));
+  }
+
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
   conSym.appendChild(createABBRandI("Blinded", "fas fa-eye-slash"));
   conSym.appendChild(createABBRandI("Deafened", "fas fa-deaf"));
