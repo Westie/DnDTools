@@ -53,6 +53,7 @@ select {
   border-width:1px;
   border-color: red;
   padding: 5px;
+    display: flex;
 }
 
 .participantTopBox{
@@ -89,11 +90,6 @@ select {
   padding: 5px;
 }
 
-
-.singleAttackTitle, .monsterReactions, .monsterLegendaryActions, .monsterSpecialAbilities{
-  font-weight: bold;
-}
-
 .monsterSpecialAbilities{
   border-style:solid;
   border-width:1px;
@@ -111,6 +107,16 @@ select {
 
 abbr {
   text-decoration: none;
+}
+
+.singleAttack{
+  display: flex;
+  justify-content: space-between;
+}
+
+.boxTitles {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .fas:hover{

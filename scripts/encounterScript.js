@@ -40,17 +40,18 @@ function playerButtonEvent(){
   let playerHP = document.getElementById("playerHP").value;
   let dexMod = document.getElementById("dexMod").value;
   let initiativeRoll = document.getElementById("initiativeRoll").value;
-  console.log(playerName + " -> " + playerHP + " -> " + dexMod + " -> " + initiativeRoll);
 
   let fightBox = document.getElementById("fightBox");
   let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
 
   //create playerDetails div
   let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
+  let participantTopBoxLeft = createElementWithSingleAttribute("DIV", "class", "participantTopBoxLeft");
+  let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
   let namePara = document.createElement("P");
   nameParaContent = document.createTextNode(playerName);
   namePara.appendChild(nameParaContent);
-  participantTopBox.appendChild(namePara);
+  participantTopBoxLeft.appendChild(namePara);
 
   let hpPara = document.createElement("P");
   let hpParaText = document.createTextNode("HP:");
@@ -58,14 +59,14 @@ function playerButtonEvent(){
   let hpNumBox = createElementWithSingleAttribute("input", "type", "number");
   hpNumBox.setAttribute("value", playerHP);
   hpPara.appendChild(hpNumBox);
-  participantTopBox.appendChild(hpPara);
+  participantTopBoxLeft.appendChild(hpPara);
 
   let aggrIni = document.createElement("P");
   let aggrIniText = document.createTextNode("Aggr. Initiative: " + (Number(initiativeRoll) + Number(dexMod)));
   aggrIni.appendChild(aggrIniText);
-  participantTopBox.appendChild(aggrIni);
+  participantTopBoxLeft.appendChild(aggrIni);
 
-  participantBox.appendChild(participantTopBox);
+  participantBox.appendChild(participantTopBoxLeft);
 
   //create conditionSymbols div
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
@@ -100,7 +101,8 @@ function playerButtonEvent(){
   deathSavingDiv.appendChild(skullBones.cloneNode(true));
 
   conSym.appendChild(deathSavingDiv);
-  participantTopBox.appendChild(conSym);
+  participantTopBoxRight.appendChild(conSym);
+  participantTopBoxRight.appendChild(participantTopBoxRight);
   fightBox.appendChild(participantBox);
 
   //SYMBOL COLOUR CHANGE
@@ -185,10 +187,6 @@ function monsterButtonEvent(){
   monAggrIniPara.appendChild(monAggrIniText);
   participantTopBoxLeft.appendChild(monAggrIniPara);
 
-  for (var i = 0; i < 100; i++) {
-    console.log((modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1));
-  }
-
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
   conSym.appendChild(createABBRandI("Blinded", "fas fa-eye-slash"));
   conSym.appendChild(createABBRandI("Deafened", "fas fa-deaf"));
@@ -196,8 +194,12 @@ function monsterButtonEvent(){
   conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
   participantTopBoxRight.appendChild(conSym);
 
+
   if (selectedMonster.actions.length > 0) {
     let actionsBox = createElementWithSingleAttribute("DIV", "class", "monsterActions");
+    let actionsBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
+    actionsBoxTitle.appendChild(document.createTextNode("Actions"));
+    actionsBox.appendChild(actionsBoxTitle);
     selectedMonster.actions.forEach(function(element){
       let singleAttack = createElementWithSingleAttribute("DIV", "class", "singleAttack");
         for (key in element){
@@ -206,13 +208,11 @@ function monsterButtonEvent(){
           }
           if (key == "name") {
             let singleAttackTitle = createElementWithSingleAttribute("DIV", "class", "singleAttackTitle");
-            singleAttackTitle.appendChild(document.createTextNode(element[key] + " "));
-            singleAttackTitle.appendChild(document.createElement("BR"));
+            singleAttackTitle.appendChild(document.createTextNode(element[key]));
             singleAttack.appendChild(singleAttackTitle);
           }
           else {
-            singleAttack.appendChild(document.createTextNode(key + " -> "+ element[key]));
-            singleAttack.appendChild(document.createElement("BR"));
+            singleAttack.appendChild(document.createTextNode(element[key]));
           }
         }
       actionsBox.appendChild(singleAttack);
@@ -222,6 +222,9 @@ function monsterButtonEvent(){
 
   if (selectedMonster.reactions.length > 0) {
     let reactionsBox = createElementWithSingleAttribute("DIV", "class", "monsterReactions");
+    let reactionsBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
+    reactionsBoxTitle.appendChild(document.createTextNode("Reactions"));
+    reactionsBox.appendChild(reactionsBoxTitle);
     selectedMonster.reactions.forEach(function(element){
       let singleReaction = createElementWithSingleAttribute("DIV", "class", "singleReaction");
         for (key in element){
@@ -240,6 +243,11 @@ function monsterButtonEvent(){
 
   if (selectedMonster.legendary_actions.length > 0) {
     let legendaryActionsBox = createElementWithSingleAttribute("DIV", "class", "monsterLegendaryActions");
+
+    let legendaryActionsBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
+    legendaryActionsBoxTitle.appendChild(document.createTextNode("Legendary Actions"));
+    legendaryActionsBox.appendChild(legendaryActionsBoxTitle);
+
     selectedMonster.legendary_actions.forEach(function(element){
       let singleLegAc = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
         for (key in element){
@@ -255,6 +263,9 @@ function monsterButtonEvent(){
 
   if (selectedMonster.special_abilities.length > 0) {
     let specAbBox = createElementWithSingleAttribute("DIV", "class", "monsterSpecialAbilities");
+    let specAbBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
+    specAbBoxTitle.appendChild(document.createTextNode("Special Abilities"));
+    specAbBox.appendChild(specAbBoxTitle);
     selectedMonster.special_abilities.forEach(function(element){
       let singleSpecAb = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
         for (key in element){
@@ -277,16 +288,15 @@ function monsterButtonEvent(){
   participantBox.appendChild(monsterAttacksBox);
   fightBox.appendChild(participantBox);
 
-
+  let conditionArray = document.querySelectorAll("i.fas");
+  conditionArray.forEach(function(element){
+    element.onclick = function(){
+      element.classList.toggle("activeColour");
+    };
+  });
   // let str = JSON.stringify(selectedMonster, undefined, 4);
   // document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
 }
-
-
-
-
-
-
 
 
 
