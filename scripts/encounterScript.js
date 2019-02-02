@@ -1,5 +1,6 @@
 let obj = JSON.parse(monstersJSON);
 let fullMonsterArray = obj.monsterDataArrays;
+let preCombatArray = [];
 
 (function(){
   //populating monster drop down menu
@@ -27,15 +28,60 @@ let fullMonsterArray = obj.monsterDataArrays;
 
 function applyEvents(){
   let addMonsterButton = document.getElementById("addMonsterButton");
-  addMonsterButton.onclick = function(){monsterButtonEvent();};
+  // addMonsterButton.onclick = function(){monsterCreator()};
+  addMonsterButton.onclick = function(){preCombatRoster("monster")};
 
   let addPlayerButton = document.getElementById("addPlayerButton");
-  addPlayerButton.onclick = function(){playerButtonEvent();};
+  // addPlayerButton.onclick = function(){playerCreator()};
+  addPlayerButton.onclick = function(){preCombatRoster("player")};
+
+  let startGameButton = document.getElementById("startGameButton");
+  startGameButton.onclick = function(){startGame()};
 
   dropDownForMonsters.onchange = function(){addMonsterButton.disabled = false;};
 }
 
-function playerButtonEvent(){
+function playerDataFetch(){
+  let playerName = document.getElementById("playerName").value;
+  let playerHP = document.getElementById("playerHP").value;
+  let dexMod = document.getElementById("dexMod").value;
+  let initiativeRoll = document.getElementById("initiativeRoll").value;
+  let playerDataArray = [playerName, playerHP, dexMod, initiativeRoll];
+  return playerDataArray;
+}
+
+function preCombatRoster(participantType){
+  if (participantType == "player") {
+    preCombatArray.push(playerDataFetch());
+  }
+  else if (participantType == "monster") {
+    let dropDown = document.getElementById("dropDownForMonsters");
+    let selectedMonsterIndex = dropDown.options[dropDown.selectedIndex].index - 1;
+    let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
+    let monName = fullMonsterArray[selectedMonsterIndex].name;
+    let monAggrIni = (modifierArray[fullMonsterArray[selectedMonsterIndex].dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
+    let monVitalStats = [monName, monAggrIni];
+    preCombatArray.push(monVitalStats);
+  }
+  else {
+    console.log("panic " + participantType);
+  }
+  console.log(preCombatArray);
+}
+
+function startGame(){
+  preCombatArray.forEach(function(element){
+    if (element.length == 2) {
+      console.log("monster");
+    }
+    if (element.length == 2) {
+      console.log("player");
+    }
+  })
+}
+
+
+function playerCreator(){
   let playerName = document.getElementById("playerName").value;
   let playerHP = document.getElementById("playerHP").value;
   let dexMod = document.getElementById("dexMod").value;
@@ -102,7 +148,7 @@ function playerButtonEvent(){
 
   conSym.appendChild(deathSavingDiv);
   participantTopBoxRight.appendChild(conSym);
-  participantTopBoxRight.appendChild(participantTopBoxRight);
+  participantBox.appendChild(participantTopBoxRight);
   fightBox.appendChild(participantBox);
 
   //SYMBOL COLOUR CHANGE
@@ -148,7 +194,7 @@ function createElementWithSingleAttribute(element, attributeType, attributeValue
   return htmlElement;
 }
 
-function monsterButtonEvent(){
+function monsterCreator(){
   let fightBox = document.getElementById("fightBox");
   let dropDown = document.getElementById("dropDownForMonsters");
   let selectedMonsterIndex = dropDown.options[dropDown.selectedIndex].index - 1;
@@ -159,7 +205,6 @@ function monsterButtonEvent(){
   let participantTopBoxLeft = createElementWithSingleAttribute("DIV", "class", "participantTopBoxLeft");
   let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
   let monsterDetailsBox = createElementWithSingleAttribute("DIV", "class", "monsterDetails");
-  let monsterAttacksBox = createElementWithSingleAttribute("DIV", "class", "monsterAttacks");
 
   let monsterNamePara = document.createElement("P");
   let monsterName = document.createTextNode(selectedMonster.name);
@@ -194,6 +239,27 @@ function monsterButtonEvent(){
   conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
   participantTopBoxRight.appendChild(conSym);
 
+  if (selectedMonster.special_abilities.length > 0) {
+    let specAbBox = createElementWithSingleAttribute("DIV", "class", "monsterSpecialAbilities");
+    let specAbBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
+    specAbBoxTitle.appendChild(document.createTextNode("Special Abilities"));
+    specAbBox.appendChild(specAbBoxTitle);
+    selectedMonster.special_abilities.forEach(function(element){
+      let singleSpecAb = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
+        for (key in element){
+          if (key == "name") {
+            singleSpecAb.appendChild(document.createTextNode(element[key] + " "));
+            singleSpecAb.appendChild(document.createElement("BR"));
+          }
+          else {
+            continue;
+          }
+        }
+      specAbBox.appendChild(singleSpecAb);
+    });
+    participantBox.appendChild(specAbBox);
+  };
+
 
   if (selectedMonster.actions.length > 0) {
     let actionsBox = createElementWithSingleAttribute("DIV", "class", "monsterActions");
@@ -217,7 +283,7 @@ function monsterButtonEvent(){
         }
       actionsBox.appendChild(singleAttack);
     });
-    monsterAttacksBox.appendChild(actionsBox);
+    participantBox.appendChild(actionsBox);
   };
 
   if (selectedMonster.reactions.length > 0) {
@@ -238,7 +304,7 @@ function monsterButtonEvent(){
         }
       reactionsBox.appendChild(singleReaction);
     });
-    monsterAttacksBox.appendChild(reactionsBox);
+    participantBox.appendChild(reactionsBox);
   };
 
   if (selectedMonster.legendary_actions.length > 0) {
@@ -258,34 +324,15 @@ function monsterButtonEvent(){
         }
       legendaryActionsBox.appendChild(singleLegAc);
     });
-    monsterAttacksBox.appendChild(legendaryActionsBox);
+    participantBox.appendChild(legendaryActionsBox);
   };
 
-  if (selectedMonster.special_abilities.length > 0) {
-    let specAbBox = createElementWithSingleAttribute("DIV", "class", "monsterSpecialAbilities");
-    let specAbBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
-    specAbBoxTitle.appendChild(document.createTextNode("Special Abilities"));
-    specAbBox.appendChild(specAbBoxTitle);
-    selectedMonster.special_abilities.forEach(function(element){
-      let singleSpecAb = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
-        for (key in element){
-          if (key == "name") {
-            singleSpecAb.appendChild(document.createTextNode(element[key] + " "));
-            singleSpecAb.appendChild(document.createElement("BR"));
-          }
-          else {
-            continue;
-          }
-        }
-      specAbBox.appendChild(singleSpecAb);
-    });
-    participantTopBoxRight.appendChild(specAbBox);
-  };
+
 
   participantTopBox.appendChild(participantTopBoxLeft);
   participantTopBox.appendChild(participantTopBoxRight);
   monsterDetailsBox.appendChild(participantTopBox);
-  participantBox.appendChild(monsterAttacksBox);
+  // participantBox.appendChild(monsterAttacksBox);
   fightBox.appendChild(participantBox);
 
   let conditionArray = document.querySelectorAll("i.fas");

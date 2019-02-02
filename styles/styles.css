@@ -66,6 +66,22 @@ select {
   padding: 5px;
 }
 
+.participantTopBoxLeft{
+  border-width:1px;
+  border-color: orange;
+  padding: 5px;
+}
+
+.participantTopBox{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:space-between;
+  border-style:solid;
+  border-width:1px;
+  border-color: orange;
+  padding: 5px;
+}
+
 .monsterAttacks{
   display: flex;
   flex-wrap: wrap;
@@ -86,7 +102,7 @@ select {
 .monsterActions, .monsterReactions{
   border-style:solid;
   border-width:1px;
-  border-color: purple;
+  border-color: blue;
   padding: 5px;
 }
 
