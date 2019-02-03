@@ -108,21 +108,16 @@ function duringGame(){
   let currentlySelected = 0;
 
   navbar.onclick = function(){
-    if (currentlySelected == Number((currentCombatArray.length)-1)) {
-      currentlySelected = 0;
-      Array.from(currentCombatArray).forEach(function(element){
-        element.classList.add("notCurrentPlayerColour");
-      });
-      currentCombatArray[currentlySelected].classList.toggle("currentPlayerColour");
-      currentCombatArray[currentlySelected].classList.toggle("notCurrentPlayerColour");
-    }
-    else {
-    currentlySelected += 1;
     currentCombatArray[currentlySelected].classList.toggle("currentPlayerColour");
     currentCombatArray[currentlySelected].classList.toggle("notCurrentPlayerColour");
-    currentCombatArray[currentlySelected-1].classList.toggle("currentPlayerColour");
-    currentCombatArray[currentlySelected-1].classList.toggle("notCurrentPlayerColour");
-  }
+    if (currentlySelected == Number((currentCombatArray.length)-1)) {
+      currentlySelected = 0;
+    }
+    else {
+      currentlySelected += 1;
+    }
+    currentCombatArray[currentlySelected].classList.toggle("currentPlayerColour");
+    currentCombatArray[currentlySelected].classList.toggle("notCurrentPlayerColour");
   };
 }
 
@@ -216,6 +211,7 @@ function playerCreator(aggIni, playerName, playerHP){
     else {
       exhElement.classList.remove("activeColour");
     }
+    console.log("Exhaust Level: " + exCount);
   };
 }
 

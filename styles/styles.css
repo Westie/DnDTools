@@ -51,7 +51,7 @@ select {
 }
 
 .currentPlayerColour{
-  background-color: blue;
+  background-color: #a2ea8f;
  }
 .notCurrentPlayerColour{
  background-color: lightgrey;
