@@ -26,10 +26,6 @@ let preCombatArray = [];
   }
 }());
 
-function enableStartGameButton(){
-  document.getElementById("startGameButton").disabled = false;
-}
-
 function applyEvents(){
   let addMonsterButton = document.getElementById("addMonsterButton");
   // addMonsterButton.onclick = function(){monsterCreator()};
@@ -63,7 +59,7 @@ function createElementWithContent(type, content){
 }
 
 function preCombatRoster(participantType){
-  enableStartGameButton();
+  document.getElementById("startGameButton").disabled = false;
   let preComatStaging = document.getElementById("preCombatStaging");
   if (participantType == "player") {
     preCombatArray.push(playerDataFetch());
@@ -86,9 +82,7 @@ function startGame(){
   document.getElementById("playerPanel").style.display = "none";
   document.getElementById("startGameButton").style.display = "none";
   document.getElementById("preCombatStaging").style.display = "none";
-
-  preCombatArray.sort((a,b) => a[0] - b[0]);
-
+  preCombatArray.sort((a,b) => b[0] - a[0]);
   preCombatArray.forEach(function(element){
     if (element.length == 2) {
       monsterCreator(element[0], element[1]);
@@ -96,7 +90,40 @@ function startGame(){
     if (element.length == 3) {
       playerCreator(element[0], element[1], element[2]);
     }
-  })
+  });
+  duringGame();
+}
+
+function duringGame(){
+  let navbar = document.getElementById("navbar")
+  navbar.style.display = "block";
+  let currentCombatArray = document.getElementsByClassName("participant");
+  console.log(currentCombatArray);
+
+  Array.from(currentCombatArray).forEach(function(element){
+    element.classList.add("notCurrentPlayerColour");
+  });
+
+  currentCombatArray[0].classList.replace("notCurrentPlayerColour", "currentPlayerColour");
+  let currentlySelected = 0;
+
+  navbar.onclick = function(){
+    if (currentlySelected == Number((currentCombatArray.length)-1)) {
+      currentlySelected = 0;
+      Array.from(currentCombatArray).forEach(function(element){
+        element.classList.add("notCurrentPlayerColour");
+      });
+      currentCombatArray[currentlySelected].classList.toggle("currentPlayerColour");
+      currentCombatArray[currentlySelected].classList.toggle("notCurrentPlayerColour");
+    }
+    else {
+    currentlySelected += 1;
+    currentCombatArray[currentlySelected].classList.toggle("currentPlayerColour");
+    currentCombatArray[currentlySelected].classList.toggle("notCurrentPlayerColour");
+    currentCombatArray[currentlySelected-1].classList.toggle("currentPlayerColour");
+    currentCombatArray[currentlySelected-1].classList.toggle("notCurrentPlayerColour");
+  }
+  };
 }
 
 function playerCreator(aggIni, playerName, playerHP){
@@ -238,8 +265,6 @@ function monsterCreator(aggrIni, name){
   monsterACPara.appendChild(monsterAC);
   participantTopBoxLeft.appendChild(monsterACPara);
 
-  // let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
-  // let monAggrIni = (modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
   let monAggrIniPara = document.createElement("P");
   let monAggrIniText = document.createTextNode("Aggr. Initiative = " + aggrIni);
   monAggrIniPara.appendChild(monAggrIniText);
