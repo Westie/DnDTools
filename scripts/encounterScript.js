@@ -46,13 +46,23 @@ function playerDataFetch(){
   let playerHP = document.getElementById("playerHP").value;
   let dexMod = document.getElementById("dexMod").value;
   let initiativeRoll = document.getElementById("initiativeRoll").value;
-  let playerDataArray = [playerName, playerHP, dexMod, initiativeRoll];
+  let aggrIni = Number(initiativeRoll) + Number(dexMod);
+  let playerDataArray = [aggrIni, playerName, playerHP];
   return playerDataArray;
 }
 
+function createElementWithContent(type, content){
+  let contentNode = document.createTextNode(content);
+  let element = document.createElement(type);
+  element.appendChild(contentNode);
+  return element;
+}
+
 function preCombatRoster(participantType){
+  let preComatStaging = document.getElementById("preCombatStaging");
   if (participantType == "player") {
     preCombatArray.push(playerDataFetch());
+    preComatStaging.appendChild(createElementWithContent("P", document.getElementById("playerName").value));
   }
   else if (participantType == "monster") {
     let dropDown = document.getElementById("dropDownForMonsters");
@@ -60,33 +70,31 @@ function preCombatRoster(participantType){
     let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
     let monName = fullMonsterArray[selectedMonsterIndex].name;
     let monAggrIni = (modifierArray[fullMonsterArray[selectedMonsterIndex].dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
-    let monVitalStats = [monName, monAggrIni];
+    let monVitalStats = [monAggrIni, monName];
     preCombatArray.push(monVitalStats);
+    preCombatStaging.appendChild(createElementWithContent("P", monName));
   }
-  else {
-    console.log("panic " + participantType);
-  }
-  console.log(preCombatArray);
 }
 
 function startGame(){
+  document.getElementById("monsterPanel").style.display = "none";
+  document.getElementById("playerPanel").style.display = "none";
+  document.getElementById("startGameButton").style.display = "none";
+  document.getElementById("preCombatStaging").style.display = "none";
+
+  preCombatArray.sort((a,b) => a[0] - b[0]);
+
   preCombatArray.forEach(function(element){
     if (element.length == 2) {
-      console.log("monster");
+      monsterCreator(element[0], element[1]);
     }
-    if (element.length == 2) {
-      console.log("player");
+    if (element.length == 3) {
+      playerCreator(element[0], element[1], element[2]);
     }
   })
 }
 
-
-function playerCreator(){
-  let playerName = document.getElementById("playerName").value;
-  let playerHP = document.getElementById("playerHP").value;
-  let dexMod = document.getElementById("dexMod").value;
-  let initiativeRoll = document.getElementById("initiativeRoll").value;
-
+function playerCreator(aggIni, playerName, playerHP){
   let fightBox = document.getElementById("fightBox");
   let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
 
@@ -107,10 +115,10 @@ function playerCreator(){
   hpPara.appendChild(hpNumBox);
   participantTopBoxLeft.appendChild(hpPara);
 
-  let aggrIni = document.createElement("P");
-  let aggrIniText = document.createTextNode("Aggr. Initiative: " + (Number(initiativeRoll) + Number(dexMod)));
-  aggrIni.appendChild(aggrIniText);
-  participantTopBoxLeft.appendChild(aggrIni);
+  let aggrIniPara = document.createElement("P");
+  let aggrIniText = document.createTextNode("Aggr. Initiative: " + aggIni);
+  aggrIniPara.appendChild(aggrIniText);
+  participantTopBoxLeft.appendChild(aggrIniPara);
 
   participantBox.appendChild(participantTopBoxLeft);
 
@@ -194,11 +202,11 @@ function createElementWithSingleAttribute(element, attributeType, attributeValue
   return htmlElement;
 }
 
-function monsterCreator(){
+function monsterCreator(aggrIni, name){
   let fightBox = document.getElementById("fightBox");
   let dropDown = document.getElementById("dropDownForMonsters");
-  let selectedMonsterIndex = dropDown.options[dropDown.selectedIndex].index - 1;
-  let selectedMonster = fullMonsterArray[selectedMonsterIndex];
+
+  let selectedMonster = fullMonsterArray.find(el => el.name == name);
 
   let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
   let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
@@ -225,10 +233,10 @@ function monsterCreator(){
   monsterACPara.appendChild(monsterAC);
   participantTopBoxLeft.appendChild(monsterACPara);
 
-  let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
-  let monAggrIni = (modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
+  // let modifierArray = [-5,-4,-4,-3,-3,-2,-2,-1,-1,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10];
+  // let monAggrIni = (modifierArray[selectedMonster.dexterity-1]) + (Math.floor(Math.random() * 20) + 1);
   let monAggrIniPara = document.createElement("P");
-  let monAggrIniText = document.createTextNode("Aggr. Initiative = " + monAggrIni);
+  let monAggrIniText = document.createTextNode("Aggr. Initiative = " + aggrIni);
   monAggrIniPara.appendChild(monAggrIniText);
   participantTopBoxLeft.appendChild(monAggrIniPara);
 
@@ -246,20 +254,19 @@ function monsterCreator(){
     specAbBox.appendChild(specAbBoxTitle);
     selectedMonster.special_abilities.forEach(function(element){
       let singleSpecAb = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
-        for (key in element){
-          if (key == "name") {
-            singleSpecAb.appendChild(document.createTextNode(element[key] + " "));
-            singleSpecAb.appendChild(document.createElement("BR"));
-          }
-          else {
-            continue;
-          }
+      for (key in element){
+        if (key == "name") {
+          singleSpecAb.appendChild(document.createTextNode(element[key] + " "));
+          singleSpecAb.appendChild(document.createElement("BR"));
         }
+        else {
+          continue;
+        }
+      }
       specAbBox.appendChild(singleSpecAb);
     });
     participantBox.appendChild(specAbBox);
   };
-
 
   if (selectedMonster.actions.length > 0) {
     let actionsBox = createElementWithSingleAttribute("DIV", "class", "monsterActions");
@@ -268,19 +275,19 @@ function monsterCreator(){
     actionsBox.appendChild(actionsBoxTitle);
     selectedMonster.actions.forEach(function(element){
       let singleAttack = createElementWithSingleAttribute("DIV", "class", "singleAttack");
-        for (key in element){
-          if (key == "desc" || key == "attack_bonus" || key == "damage_bonus") {
-              continue;
-          }
-          if (key == "name") {
-            let singleAttackTitle = createElementWithSingleAttribute("DIV", "class", "singleAttackTitle");
-            singleAttackTitle.appendChild(document.createTextNode(element[key]));
-            singleAttack.appendChild(singleAttackTitle);
-          }
-          else {
-            singleAttack.appendChild(document.createTextNode(element[key]));
-          }
+      for (key in element){
+        if (key == "desc" || key == "attack_bonus" || key == "damage_bonus") {
+          continue;
         }
+        if (key == "name") {
+          let singleAttackTitle = createElementWithSingleAttribute("DIV", "class", "singleAttackTitle");
+          singleAttackTitle.appendChild(document.createTextNode(element[key]));
+          singleAttack.appendChild(singleAttackTitle);
+        }
+        else {
+          singleAttack.appendChild(document.createTextNode(element[key]));
+        }
+      }
       actionsBox.appendChild(singleAttack);
     });
     participantBox.appendChild(actionsBox);
@@ -293,15 +300,15 @@ function monsterCreator(){
     reactionsBox.appendChild(reactionsBoxTitle);
     selectedMonster.reactions.forEach(function(element){
       let singleReaction = createElementWithSingleAttribute("DIV", "class", "singleReaction");
-        for (key in element){
-          if (key == "name") {
-            singleReaction.appendChild(document.createTextNode(element[key] + " "));
-            singleReaction.appendChild(document.createElement("BR"));
-          }
-          else {
-            continue;
-          }
+      for (key in element){
+        if (key == "name") {
+          singleReaction.appendChild(document.createTextNode(element[key] + " "));
+          singleReaction.appendChild(document.createElement("BR"));
         }
+        else {
+          continue;
+        }
+      }
       reactionsBox.appendChild(singleReaction);
     });
     participantBox.appendChild(reactionsBox);
@@ -316,12 +323,12 @@ function monsterCreator(){
 
     selectedMonster.legendary_actions.forEach(function(element){
       let singleLegAc = createElementWithSingleAttribute("DIV", "class", "singleLegAc");
-        for (key in element){
-          if (key == "name") {
-            singleLegAc.appendChild(document.createTextNode(element[key] + " "));
-            singleLegAc.appendChild(document.createElement("BR"));
-          }
+      for (key in element){
+        if (key == "name") {
+          singleLegAc.appendChild(document.createTextNode(element[key] + " "));
+          singleLegAc.appendChild(document.createElement("BR"));
         }
+      }
       legendaryActionsBox.appendChild(singleLegAc);
     });
     participantBox.appendChild(legendaryActionsBox);
@@ -350,25 +357,25 @@ function monsterCreator(){
 
 
 function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-         json = JSON.stringify(json, undefined, 2);
+  if (typeof json != 'string') {
+    json = JSON.stringify(json, undefined, 2);
+  }
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+    var cls = 'number';
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) {
+        cls = 'key';
+      } else {
+        cls = 'string';
+      }
+    } else if (/true|false/.test(match)) {
+      cls = 'boolean';
+    } else if (/null/.test(match)) {
+      cls = 'null';
     }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
+    return '<span class="' + cls + '">' + match + '</span>';
+  });
 }
 
 

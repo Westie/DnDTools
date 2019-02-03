@@ -13,14 +13,14 @@
   </header>
   <main>
   <button type="button" id="startGameButton" >Start Combat</button>
-    <section id="space">
+    <section id="monsterPanel">
       <select id="dropDownForMonsters">
         <option value="" selected disabled hidden>Choose monster</option>
         <!-- options populate from js -->
       </select>
       <button type="button" id="addMonsterButton" disabled>Add Monster</button>
     </section>
-    <section class="playerPanel">
+    <section class="playerPanel" id="playerPanel">
       Player Name:
       <input type="text" class="playerFormInput" id="playerName" value="John">
       <br>
@@ -34,6 +34,8 @@
       <input type="number" class="playerFormInput" id="initiativeRoll" value="13">
       <br>
       <button type="button" id="addPlayerButton">Add Player</button>
+    </section>
+    <section id="preCombatStaging">
 
     </section>
     <section id="fightBox">
