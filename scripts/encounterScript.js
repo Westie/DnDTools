@@ -26,6 +26,10 @@ let preCombatArray = [];
   }
 }());
 
+function enableStartGameButton(){
+  document.getElementById("startGameButton").disabled = false;
+}
+
 function applyEvents(){
   let addMonsterButton = document.getElementById("addMonsterButton");
   // addMonsterButton.onclick = function(){monsterCreator()};
@@ -59,6 +63,7 @@ function createElementWithContent(type, content){
 }
 
 function preCombatRoster(participantType){
+  enableStartGameButton();
   let preComatStaging = document.getElementById("preCombatStaging");
   if (participantType == "player") {
     preCombatArray.push(playerDataFetch());
