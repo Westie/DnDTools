@@ -53,6 +53,7 @@ function playerDataFetch(){
 }
 
 function preCombatRoster(participantType){
+  //immediately enables start game button with first entry
   document.getElementById("startGameButton").disabled = false;
   let preComatStaging = document.getElementById("preCombatStaging");
   if (participantType == "player") {
@@ -76,6 +77,7 @@ function startGame(){
   document.getElementById("playerPanel").style.display = "none";
   document.getElementById("startGameButton").style.display = "none";
   document.getElementById("preCombatStaging").style.display = "none";
+  //sorts list of participants by aggregate initiative, largest to smallest
   preCombatArray.sort((a,b) => b[0] - a[0]);
   preCombatArray.forEach(function(element){
     if (element.length == 2) {
@@ -89,6 +91,7 @@ function startGame(){
 }
 
 function duringGame(){
+  //display next button
   let navbar = document.getElementById("navbar")
   navbar.style.display = "block";
   let currentCombatArray = document.getElementsByClassName("participant");
@@ -122,18 +125,48 @@ function playerCreator(aggIni, playerName, playerHP, playerAC){
   let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
   let participantTopBoxLeft = createElementWithSingleAttribute("DIV", "class", "participantTopBoxLeft");
   let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
+//player Name
   let namePara = createElementWithContent("P", playerName);
   participantTopBoxLeft.appendChild(namePara);
 
+//player HP
   let hpPara = createElementWithContent("P", "HP:");
-  let hpNumBox = createElementWithSingleAttribute("input", "type", "number");
+  let hpNumBox = createElementWithSingleAttribute("INPUT", "type", "number");
   hpNumBox.setAttribute("value", playerHP);
+  hpNumBox.setAttribute("class", "hpCalcInput");
   hpPara.appendChild(hpNumBox);
   participantTopBoxLeft.appendChild(hpPara);
 
+//player HP calculator
+  let hPCalc = createElementWithContent("P", "");
+  let calcElement = createElementWithSingleAttribute("INPUT", "type", "number");
+  calcElement.setAttribute("class", "hpMathsInput");
+  hPCalc.appendChild(calcElement);
+  let plusButton = createElementWithContent("BUTTON", "+");
+  plusButton.setAttribute("type", "button");
+  plusButton.setAttribute("type", "button");
+  plusButton.onclick = function(){
+    let currentHP = Number(hpNumBox.value);
+    let modValue = Number(calcElement.value);
+    calcElement.value = "";
+    hpNumBox.setAttribute("value", Number(currentHP+modValue));
+  }
+  let minusButton = createElementWithContent("BUTTON", "-");
+  minusButton.onclick = function(){
+    let currentHP = Number(hpNumBox.value);
+    let modValue = Number(calcElement.value);
+    calcElement.value = "";
+    hpNumBox.setAttribute("value", Number(currentHP-modValue));
+  }
+  hPCalc.appendChild(plusButton);
+  hPCalc.appendChild(minusButton);
+  participantTopBoxLeft.appendChild(hPCalc);
+
+// player Initiative
   let aggrIniPara = createElementWithContent("P", "Aggr. Initiative: " + aggIni);
   participantTopBoxLeft.appendChild(aggrIniPara);
 
+//player Armour Class
   let acPara = createElementWithContent("P", "Armour Class: " + playerAC);
   participantTopBoxLeft.appendChild(acPara);
 
@@ -201,6 +234,7 @@ function playerCreator(aggIni, playerName, playerHP, playerAC){
     else {
       exhElement.classList.remove("activeColour");
     }
+    //I don't know why, but this only works if this console.log exists
     console.log("Exhaust Level: " + exCount);
   };
 }
@@ -226,22 +260,53 @@ function monsterCreator(aggrIni, name){
   let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
   let monsterDetailsBox = createElementWithSingleAttribute("DIV", "class", "monsterDetails");
 
+//Monster name
   let monsterNamePara = createElementWithContent("P", selectedMonster.name);
   participantTopBoxLeft.appendChild(monsterNamePara);
   participantBox.appendChild(monsterDetailsBox);
 
+//monster HP
   let monsterHPPara = createElementWithContent("P", "HP: ");
   let monsterHPiElement = createElementWithSingleAttribute("INPUT", "type", "number");
   monsterHPiElement.setAttribute("value", selectedMonster.hit_points);
+  monsterHPiElement.setAttribute("class", "hpCalcInput");
   monsterHPPara.appendChild(monsterHPiElement);
   participantTopBoxLeft.appendChild(monsterHPPara);
 
+//monster HP calculator
+  let monsterHPCalc = createElementWithContent("P", "");
+  let monsterCalcElement = createElementWithSingleAttribute("INPUT", "type", "number");
+  monsterCalcElement.setAttribute("class", "hpMathsInput");
+  monsterHPCalc.appendChild(monsterCalcElement);
+  let plusButton = createElementWithContent("BUTTON", "+");
+  plusButton.setAttribute("type", "button");
+  plusButton.setAttribute("type", "button");
+  plusButton.onclick = function(){
+    let currentHP = Number(monsterHPiElement.value);
+    let modValue = Number(monsterCalcElement.value);
+    monsterCalcElement.value = "";
+    monsterHPiElement.setAttribute("value", Number(currentHP+modValue));
+  }
+  let minusButton = createElementWithContent("BUTTON", "-");
+  minusButton.onclick = function(){
+    let currentHP = Number(monsterHPiElement.value);
+    let modValue = Number(monsterCalcElement.value);
+    monsterCalcElement.value = "";
+    monsterHPiElement.setAttribute("value", Number(currentHP-modValue));
+  }
+  monsterHPCalc.appendChild(plusButton);
+  monsterHPCalc.appendChild(minusButton);
+  participantTopBoxLeft.appendChild(monsterHPCalc);
+
+//monster Armour Class
   let monsterACPara = createElementWithContent("P", "AC: " + selectedMonster.armor_class);
   participantTopBoxLeft.appendChild(monsterACPara);
 
+//monster aggregate initiative
   let monAggrIniPara = createElementWithContent("P", "Aggr. Initiative = " + aggrIni);
   participantTopBoxLeft.appendChild(monAggrIniPara);
 
+//monster condition symbols, uses less symbols than a player
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
   conSym.appendChild(createABBRandI("Blinded", "fas fa-eye-slash"));
   conSym.appendChild(createABBRandI("Deafened", "fas fa-deaf"));
@@ -249,6 +314,7 @@ function monsterCreator(aggrIni, name){
   conSym.appendChild(createABBRandI("Charmed", "fas fa-heart"));
   participantTopBoxRight.appendChild(conSym);
 
+//monster special abilities if it has any
   if (selectedMonster.special_abilities.length > 0) {
     let specAbBox = createElementWithSingleAttribute("DIV", "class", "monsterSpecialAbilities");
     let specAbBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
@@ -270,6 +336,7 @@ function monsterCreator(aggrIni, name){
     participantBox.appendChild(specAbBox);
   };
 
+//monster attacks if it has any
   if (selectedMonster.actions.length > 0) {
     let actionsBox = createElementWithSingleAttribute("DIV", "class", "monsterActions");
     let actionsBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
@@ -295,6 +362,7 @@ function monsterCreator(aggrIni, name){
     participantBox.appendChild(actionsBox);
   };
 
+//monster reactions if it has any
   if (selectedMonster.reactions.length > 0) {
     let reactionsBox = createElementWithSingleAttribute("DIV", "class", "monsterReactions");
     let reactionsBoxTitle = createElementWithSingleAttribute("DIV", "class", "boxTitles");
@@ -316,6 +384,7 @@ function monsterCreator(aggrIni, name){
     participantBox.appendChild(reactionsBox);
   };
 
+//monster legendary actions if it has any
   if (selectedMonster.legendary_actions.length > 0) {
     let legendaryActionsBox = createElementWithSingleAttribute("DIV", "class", "monsterLegendaryActions");
 
@@ -336,11 +405,13 @@ function monsterCreator(aggrIni, name){
     participantBox.appendChild(legendaryActionsBox);
   };
 
+//add to page
   participantTopBox.appendChild(participantTopBoxLeft);
   participantTopBox.appendChild(participantTopBoxRight);
   monsterDetailsBox.appendChild(participantTopBox);
   fightBox.appendChild(participantBox);
 
+//event listener added to each condition symbol to let it change colour on click
   let conditionArray = document.querySelectorAll("i.fas");
   conditionArray.forEach(function(element){
     element.onclick = function(){
@@ -348,6 +419,8 @@ function monsterCreator(aggrIni, name){
     };
   });
 }
+
+//-------------Helper functions
 
 function createElementWithSingleAttribute(element, attributeType, attributeValue){
   let htmlElement = document.createElement(element);

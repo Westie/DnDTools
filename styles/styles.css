@@ -170,6 +170,18 @@ p{
   height: 1em;
 }
 
+.hpMathsInput {
+  width: 3em;
+}
+
+.hpCalcInput {
+  width: 3em;
+}
+
+p > button{
+  width: 1.5em
+}
+
 
 
 
