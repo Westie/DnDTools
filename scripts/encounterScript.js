@@ -28,11 +28,9 @@ let preCombatArray = [];
 
 function applyEvents(){
   let addMonsterButton = document.getElementById("addMonsterButton");
-  // addMonsterButton.onclick = function(){monsterCreator()};
   addMonsterButton.onclick = function(){preCombatRoster("monster")};
 
   let addPlayerButton = document.getElementById("addPlayerButton");
-  // addPlayerButton.onclick = function(){playerCreator()};
   addPlayerButton.onclick = function(){preCombatRoster("player")};
 
   let startGameButton = document.getElementById("startGameButton");
@@ -47,7 +45,9 @@ function playerDataFetch(){
   let dexMod = document.getElementById("dexMod").value;
   let initiativeRoll = document.getElementById("initiativeRoll").value;
   let aggrIni = Number(initiativeRoll) + Number(dexMod);
-  let playerDataArray = [aggrIni, playerName, playerHP];
+  let playerAC = document.getElementById("armourClass").value;
+
+  let playerDataArray = [aggrIni, playerName, playerHP, playerAC];
   return playerDataArray;
 }
 
@@ -87,8 +87,8 @@ function startGame(){
     if (element.length == 2) {
       monsterCreator(element[0], element[1]);
     }
-    if (element.length == 3) {
-      playerCreator(element[0], element[1], element[2]);
+    if (element.length == 4) {
+      playerCreator(element[0], element[1], element[2], element[3]);
     }
   });
   duringGame();
@@ -121,7 +121,7 @@ function duringGame(){
   };
 }
 
-function playerCreator(aggIni, playerName, playerHP){
+function playerCreator(aggIni, playerName, playerHP, playerAC){
   let fightBox = document.getElementById("fightBox");
   let participantBox = createElementWithSingleAttribute("DIV", "class", "participant");
 
@@ -146,6 +146,11 @@ function playerCreator(aggIni, playerName, playerHP){
   let aggrIniText = document.createTextNode("Aggr. Initiative: " + aggIni);
   aggrIniPara.appendChild(aggrIniText);
   participantTopBoxLeft.appendChild(aggrIniPara);
+
+  let acPara = document.createElement("P");
+  let acParaText = document.createTextNode("Armour Class: " + playerAC);
+  acPara.appendChild(acParaText);
+  participantTopBoxLeft.appendChild(acPara);
 
   participantBox.appendChild(participantTopBoxLeft);
 
@@ -359,8 +364,6 @@ function monsterCreator(aggrIni, name){
     });
     participantBox.appendChild(legendaryActionsBox);
   };
-
-
 
   participantTopBox.appendChild(participantTopBoxLeft);
   participantTopBox.appendChild(participantTopBoxRight);
