@@ -40,6 +40,7 @@ function applyEvents(){
 }
 
 function playerDataFetch(){
+  //retrieves player data from HTML and returns array
   let playerName = document.getElementById("playerName").value;
   let playerHP = document.getElementById("playerHP").value;
   let dexMod = document.getElementById("dexMod").value;
@@ -49,13 +50,6 @@ function playerDataFetch(){
 
   let playerDataArray = [aggrIni, playerName, playerHP, playerAC];
   return playerDataArray;
-}
-
-function createElementWithContent(type, content){
-  let contentNode = document.createTextNode(content);
-  let element = document.createElement(type);
-  element.appendChild(contentNode);
-  return element;
 }
 
 function preCombatRoster(participantType){
@@ -98,7 +92,6 @@ function duringGame(){
   let navbar = document.getElementById("navbar")
   navbar.style.display = "block";
   let currentCombatArray = document.getElementsByClassName("participant");
-  console.log(currentCombatArray);
 
   Array.from(currentCombatArray).forEach(function(element){
     element.classList.add("notCurrentPlayerColour");
@@ -129,27 +122,19 @@ function playerCreator(aggIni, playerName, playerHP, playerAC){
   let participantTopBox = createElementWithSingleAttribute("DIV", "class", "participantTopBox");
   let participantTopBoxLeft = createElementWithSingleAttribute("DIV", "class", "participantTopBoxLeft");
   let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
-  let namePara = document.createElement("P");
-  nameParaContent = document.createTextNode(playerName);
-  namePara.appendChild(nameParaContent);
+  let namePara = createElementWithContent("P", playerName);
   participantTopBoxLeft.appendChild(namePara);
 
-  let hpPara = document.createElement("P");
-  let hpParaText = document.createTextNode("HP:");
-  hpPara.appendChild(hpParaText);
+  let hpPara = createElementWithContent("P", "HP:");
   let hpNumBox = createElementWithSingleAttribute("input", "type", "number");
   hpNumBox.setAttribute("value", playerHP);
   hpPara.appendChild(hpNumBox);
   participantTopBoxLeft.appendChild(hpPara);
 
-  let aggrIniPara = document.createElement("P");
-  let aggrIniText = document.createTextNode("Aggr. Initiative: " + aggIni);
-  aggrIniPara.appendChild(aggrIniText);
+  let aggrIniPara = createElementWithContent("P", "Aggr. Initiative: " + aggIni);
   participantTopBoxLeft.appendChild(aggrIniPara);
 
-  let acPara = document.createElement("P");
-  let acParaText = document.createTextNode("Armour Class: " + playerAC);
-  acPara.appendChild(acParaText);
+  let acPara = createElementWithContent("P", "Armour Class: " + playerAC);
   participantTopBoxLeft.appendChild(acPara);
 
   participantBox.appendChild(participantTopBoxLeft);
@@ -229,12 +214,6 @@ function createABBRandI(conditionTitle, iClass){
   return abbr;
 }
 
-function createElementWithSingleAttribute(element, attributeType, attributeValue){
-  let htmlElement = document.createElement(element);
-  htmlElement.setAttribute(attributeType, attributeValue);
-  return htmlElement;
-}
-
 function monsterCreator(aggrIni, name){
   let fightBox = document.getElementById("fightBox");
   let dropDown = document.getElementById("dropDownForMonsters");
@@ -247,28 +226,20 @@ function monsterCreator(aggrIni, name){
   let participantTopBoxRight = createElementWithSingleAttribute("DIV", "class", "participantTopBoxRight");
   let monsterDetailsBox = createElementWithSingleAttribute("DIV", "class", "monsterDetails");
 
-  let monsterNamePara = document.createElement("P");
-  let monsterName = document.createTextNode(selectedMonster.name);
-  monsterNamePara.appendChild(monsterName);
+  let monsterNamePara = createElementWithContent("P", selectedMonster.name);
   participantTopBoxLeft.appendChild(monsterNamePara);
   participantBox.appendChild(monsterDetailsBox);
 
-  let monsterHPPara = document.createElement("P");
-  let monsterHPlabel = document.createTextNode("HP: ");
-  monsterHPPara.appendChild(monsterHPlabel);
+  let monsterHPPara = createElementWithContent("P", "HP: ");
   let monsterHPiElement = createElementWithSingleAttribute("INPUT", "type", "number");
   monsterHPiElement.setAttribute("value", selectedMonster.hit_points);
   monsterHPPara.appendChild(monsterHPiElement);
   participantTopBoxLeft.appendChild(monsterHPPara);
 
-  let monsterACPara = document.createElement("P");
-  let monsterAC = document.createTextNode("AC: " + selectedMonster.armor_class);
-  monsterACPara.appendChild(monsterAC);
+  let monsterACPara = createElementWithContent("P", "AC: " + selectedMonster.armor_class);
   participantTopBoxLeft.appendChild(monsterACPara);
 
-  let monAggrIniPara = document.createElement("P");
-  let monAggrIniText = document.createTextNode("Aggr. Initiative = " + aggrIni);
-  monAggrIniPara.appendChild(monAggrIniText);
+  let monAggrIniPara = createElementWithContent("P", "Aggr. Initiative = " + aggrIni);
   participantTopBoxLeft.appendChild(monAggrIniPara);
 
   let conSym = createElementWithSingleAttribute("DIV", "class", "conditionSymbols");
@@ -368,7 +339,6 @@ function monsterCreator(aggrIni, name){
   participantTopBox.appendChild(participantTopBoxLeft);
   participantTopBox.appendChild(participantTopBoxRight);
   monsterDetailsBox.appendChild(participantTopBox);
-  // participantBox.appendChild(monsterAttacksBox);
   fightBox.appendChild(participantBox);
 
   let conditionArray = document.querySelectorAll("i.fas");
@@ -377,64 +347,17 @@ function monsterCreator(aggrIni, name){
       element.classList.toggle("activeColour");
     };
   });
-  // let str = JSON.stringify(selectedMonster, undefined, 4);
-  // document.body.appendChild(document.createElement('pre')).innerHTML = syntaxHighlight(str);
 }
 
-
-
-
-
-function syntaxHighlight(json) {
-  if (typeof json != 'string') {
-    json = JSON.stringify(json, undefined, 2);
-  }
-  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-    var cls = 'number';
-    if (/^"/.test(match)) {
-      if (/:$/.test(match)) {
-        cls = 'key';
-      } else {
-        cls = 'string';
-      }
-    } else if (/true|false/.test(match)) {
-      cls = 'boolean';
-    } else if (/null/.test(match)) {
-      cls = 'null';
-    }
-    return '<span class="' + cls + '">' + match + '</span>';
-  });
+function createElementWithSingleAttribute(element, attributeType, attributeValue){
+  let htmlElement = document.createElement(element);
+  htmlElement.setAttribute(attributeType, attributeValue);
+  return htmlElement;
 }
 
-
-// function LogJSONstringify(json) {
-//     if (typeof json != 'string') {
-//         json = JSON.stringify(json, undefined, '\t');
-//     }
-//     var arr = [],
-//         _string = 'color:green',
-//         _number = 'color:darkorange',
-//         _boolean = 'color:blue',
-//         _null = 'color:magenta',
-//         _key = 'color:red';
-//     json = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-//         var style = _number;
-//         if (/^"/.test(match)) {
-//             if (/:$/.test(match)) {
-//                 style = _key;
-//             } else {
-//                 style = _string;
-//             }
-//         } else if (/true|false/.test(match)) {
-//             style = _boolean;
-//         } else if (/null/.test(match)) {
-//             style = _null;
-//         }
-//         arr.push(style);
-//         arr.push('');
-//         return '%c' + match + '%c';
-//     });
-//     arr.unshift(json);
-//     console.log.apply(console, arr);
-// }
+function createElementWithContent(type, content){
+  let contentNode = document.createTextNode(content);
+  let element = document.createElement(type);
+  element.appendChild(contentNode);
+  return element;
+}
