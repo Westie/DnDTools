@@ -1,0 +1,53 @@
+#page-index {
+	background-color: dimgrey;
+	color: white;
+	
+	header {
+		height: calc(100vh / 5);
+		line-height: calc(100vh / 5);
+		text-align: center;
+		
+		h1 {
+			font-size: 3em;
+			font-family: Arial;
+			background-color: coral;
+		}
+	}
+	
+	main {
+		ul {
+			height: calc((100vh / 5) * 4);
+			width: 100vw;
+			
+			display: table;
+			
+			li {
+				display: table-row;
+				text-align: center;
+				
+				h1, a {
+					display: table-cell;
+					vertical-align: middle;
+				}
+				
+				h1 {
+					font-size: 3em;
+					font-family: Arial;
+					background-color: coral;
+				}
+				
+				a {
+					font-size: 1.5em;
+					font-family: Arial;
+					
+					color: white;
+					text-decoration: none;
+					
+					&:hover {
+						background-color: darkcyan;
+					}
+				}
+			}
+		}
+	}
+}
